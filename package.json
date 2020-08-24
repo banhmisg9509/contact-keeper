@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "babel-node src/server.js",
-    "dev": "nodemon --exec babel-node src/server.js"
+    "dev": "nodemon --exec babel-node -r ./node_modules/dotenv/config src/server.js"
   },
   "keywords": [],
   "author": "ndhung <banhmisg9509@gmail.com>",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.4"
   }
 }
