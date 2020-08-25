@@ -4,8 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "babel-node src/server.js",
-    "dev": "nodemon --exec babel-node -r ./node_modules/dotenv/config src/server.js"
+    "start": "babel-node -r ./node_modules/dotenv/config src/server.js",
+    "dev": "nodemon --delay 1500ms --exec babel-node -r ./node_modules/dotenv/config src/server.js"
+  },
+  "events": {
+      "restart": "fuser -k 3000/tcp"
   },
   "keywords": [],
   "author": "ndhung <banhmisg9509@gmail.com>",

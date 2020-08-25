@@ -1,1 +1,2 @@
-export const MONGO_URI = `mongodb+srv://ndhung:${process.env.DB_PWD}@cluster0.yr4go.mongodb.net/contact-keeper?retryWrites=true&w=majority`
+export const MONGO_URI = process.env.MONGO_URI_DEV || process.env.MONGO_URI;
+export const JWT_SECRET = process.env.JWT_SECRET;

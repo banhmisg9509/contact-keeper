@@ -1,5 +1,6 @@
 import { check, validationResult } from 'express-validator';
 import { User } from '../models';
+import { signJWTToken } from '../services/authService';
 
 const validateUser = [
   check('name', 'Name is required.').not().isEmpty(),
@@ -31,10 +32,12 @@ const users = (router) => {
       user = new User({ name, email, pwd: password });
 
       await user.save();
-      res.send('User saved');
+
+      signJWTToken(user)
+        .then((token) => res.json({ token }))
+        .catch((err) => handleErrorResponse(res, err));
     } catch (err) {
-      console.log(err.message);
-      res.status(500).send('Server error');
+      handleErrorResponse(res, err);
     }
   });
 };
