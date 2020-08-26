@@ -1,30 +1,26 @@
-import { JWT_SECRET } from '../config/default';
-import jwt from 'jsonwebtoken';
+import { User } from '../models';
+import { signJWTToken } from '../services/commonService';
+import { handleErrorResponse } from '../services/commonService';
 
-// custom payload by callback if needed
-export const signJWTToken = (user, callback) => {
-  return new Promise((resolve, reject) => {
-    let payload;
-    if(callback) {
-      payload = callback(user)
-    } else {
-      payload = {
-        user: {
-          id: user.id,
-        },
-      };
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid credentials!' });
     }
 
-    jwt.sign(
-      payload,
-      JWT_SECRET,
-      {
-        expiresIn: 86400,
-      },
-      (err, token) => {
-        if (err) return reject(err);
-        resolve(token);
-      }
-    );
-  });
-};
+    const isMatch = await user.comparePassword(password);
+
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid credentials!' });
+    }
+
+    signJWTToken(user)
+      .then((token) => res.json({ token }))
+      .catch((err) => handleErrorResponse(res, err));
+  } catch (err) {
+    handleErrorResponse(res, err);
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "restartable": "rs",
+  "ignore": [".git", "node_modules/**/node_modules"],
+  "exec": "babel-node -r ./node_modules/dotenv/config src/server.js",
+  "events": {
+    "restart": "fuser -k 5000/tcp",
+    "crash": "fuser -k 5000/tcp"
+  },
+  "watch": ["src/**/*"],
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
