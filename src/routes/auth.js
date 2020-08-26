@@ -1,5 +1,6 @@
 import { check, validationResult } from 'express-validator';
-import { login } from '../services/authService';
+import verifyToken from '../middleware/auth';
+import { getLoggedInUser, login } from '../services/authService';
 
 const validateLogin = [
   check('email', 'Please include a valid email.').isEmail(),
@@ -10,8 +11,8 @@ const auth = (router) => {
   // @route   GET api/auth
   // @desc    Get logged in user
   // @access  Private
-  router.get('/auth', (req, res) => {
-    res.send('Get logged in user');
+  router.get('/auth', verifyToken, async (req, res) => {
+    getLoggedInUser(req, res);
   });
 
   // @route   POST api/auth

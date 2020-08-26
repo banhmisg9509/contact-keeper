@@ -2,6 +2,15 @@ import { User } from '../models';
 import { signJWTToken } from '../services/commonService';
 import { handleErrorResponse } from '../services/commonService';
 
+export const getLoggedInUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    handleErrorResponse(res, err);
+  }
+};
+
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -23,4 +32,4 @@ export const login = async (req, res) => {
   } catch (err) {
     handleErrorResponse(res, err);
   }
-}
+};
