@@ -1,18 +1,52 @@
-const contacts = (router) => {
+import { check, validationResult } from 'express-validator';
+import { Contact } from '../models';
+import { handleErrorResponse } from '../services/commonService';
+import verifyToken from '../middleware/auth';
 
+const contacts = (router) => {
   // @route   GET api/contacts
   // @desc    Get all users contacts
   // @access  Private
-  router.get('/contacts', (req, res) => {
-    res.send('Get all contacts');
+  router.get('/contacts', verifyToken, async (req, res) => {
+    try {
+      const contacts = await Contact.find({ user: req.user.id }).sort({
+        date: -1,
+      });
+      res.json(contacts);
+    } catch (err) {
+      handleErrorResponse(res, err);
+    }
   });
 
   // @route   POST api/contacts
   // @desc    Add new contacts
   // @access  Private
-  router.post('/contacts', (req, res) => {
-    res.send('Add contact');
-  });
+  router.post(
+    '/contacts',
+    [verifyToken, [check('name', 'Name is required.').not().isEmpty()]],
+    async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
+      const { name, email, phone, type } = req.body;
+      try {
+        const newContact = new Contact({
+          name,
+          email,
+          phone,
+          type,
+          user: req.user.id,
+        });
+
+        const contact = await newContact.save();
+        return res.json(contact);
+      } catch (err) {
+        handleErrorResponse(res, err);
+      }
+    }
+  );
 
   // @route   PUT api/contacts/:id
   // @desc    Update contact
