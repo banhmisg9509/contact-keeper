@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "babel-node -r ./node_modules/dotenv/config src/server.js",
-    "dev": "nodemon"
+    "dev": "concurrently \"nodemon\" \"yarn run client\"",
+    "client": "yarn --cwd ./client start",
+    "clientinstall": "yarn --cwd ./client install"
   },
   "keywords": [],
   "author": "ndhung <banhmisg9509@gmail.com>",
