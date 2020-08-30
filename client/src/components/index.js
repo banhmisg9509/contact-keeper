@@ -1,8 +1,7 @@
+export { default as ContactFilter } from './contacts/ContactFilter/ContactFilter';
+export { default as ContactForm } from './contacts/ContactForm/ContactForm';
+export { default as ContactItem } from './contacts/ContactItem/ContactItem';
+export { default as Contacts } from './contacts/Contacts/Contacts';
 export { default as NavBar } from './layouts/NavBar/NavBar';
-export { default as Home } from './pages/Home/Home';
 export { default as About } from './pages/About/About';
-
-export { default as Contacts } from './Contacts/Contacts';
-export { default as ContactItem } from './ContactItem/ContactItem';
-export { default as ContactForm } from './ContactForm/ContactForm';
-export { default as ContactFilter } from './ContactFilter/ContactFilter';
+export { default as Home } from './pages/Home/Home';
