@@ -1,9 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AlertContext } from 'context';
+import { AlertContext, AuthContext } from 'context';
 
 function Register() {
   const { setAlert } = useContext(AlertContext);
+  const { register, error, clearErrors } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (error) {
+      setAlert(error, 'danger');
+      clearErrors();
+    }
+  }, [error]);
 
   const [user, setUser] = useState({
     name: '',
@@ -25,7 +33,7 @@ function Register() {
     } else if (password !== password2) {
       setAlert('Passwords does not match', 'danger');
     } else {
-      console.log('Reigister submit', user);
+      register({ name, email, password });
     }
   };
 
