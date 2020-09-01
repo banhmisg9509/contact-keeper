@@ -2,16 +2,21 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertContext, AuthContext } from 'context';
 
-function Register() {
+function Register(props) {
   const { setAlert } = useContext(AlertContext);
-  const { register, error, clearErrors } = useContext(AuthContext);
+  const { register, error, clearErrors, isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
+    if(isAuthenticated) {
+      props.history.push('/')
+    }
+
     if (error) {
       setAlert(error, 'danger');
       clearErrors();
     }
-  }, [error]);
+    // eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
 
   const [user, setUser] = useState({
     name: '',

@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the contact keeper API',
+    msg: 'Welcome to the contact keeper API',
   });
 });
 
