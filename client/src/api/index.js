@@ -1,4 +1,4 @@
 import { registerUser } from './userAPI';
-import { getLoggedInUser } from './authAPI';
+import { getLoggedInUser, loginUser } from './authAPI';
 
-export { registerUser, getLoggedInUser };
+export { registerUser, getLoggedInUser, loginUser };

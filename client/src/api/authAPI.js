@@ -35,3 +35,9 @@ export const getLoggedInUser = async () => {
     .then(user => user)
     .catch(error => { throw error });
 };
+
+export const loginUser = async (formData) => {
+  return axiosClient
+  .post('/api/auth', formData)
+  .then()
+}

@@ -1,4 +1,4 @@
-import { registerUser, getLoggedInUser } from 'api';
+import { registerUser, getLoggedInUser, loginUser } from 'api';
 import React, { useReducer } from 'react';
 import AuthContext from './authContext';
 import AuthReducer from './authReducer';
@@ -44,8 +44,14 @@ const AuthState = ({ children }) => {
     }
   };
 
-  const login = () => {
-    console.log('login');
+  const login = async (formData) => {
+    try {
+      const token = await loginUser(formData);
+      dispatch({ type: LOGIN_SUCCESS, payload: token });
+      loadUser();
+    } catch (error) {
+      dispatch({ type: LOGIN_FAIL, payload: error.msg });
+    }
   };
 
   const logout = () => {
