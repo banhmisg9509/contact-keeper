@@ -55,7 +55,7 @@ const AuthState = ({ children }) => {
   };
 
   const logout = () => {
-    console.log('logout');
+    dispatch({ type: LOGOUT });
   };
 
   const clearErrors = () => {
