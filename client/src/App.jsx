@@ -1,8 +1,8 @@
-import { NavBar, Home, About, Register, Login, Alerts } from 'components';
+import { About, Alerts, Home, Login, NavBar, Register, PrivateRoute } from 'components';
+import { AlertState, AuthState, ContactState } from 'context';
 import React, { Fragment } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
-import { ContactState, AuthState, AlertState } from 'context';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
               <div className='container'>
                 <Alerts />
                 <Switch>
-                  <Route exact path='/' component={Home} />
+                  <PrivateRoute exact path='/' component={Home} />
                   <Route exact path='/about' component={About} />
                   <Route exact path='/register' component={Register} />
                   <Route exact path='/login' component={Login} />

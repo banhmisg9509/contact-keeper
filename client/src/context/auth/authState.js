@@ -30,6 +30,7 @@ const AuthState = ({ children }) => {
       const user = await getLoggedInUser();
       dispatch({ type: USER_LOADED, payload: user });
     } catch (error) {
+      console.log(error);
       dispatch({ type: AUTH_ERROR, payload: error.msg });
     }
   };

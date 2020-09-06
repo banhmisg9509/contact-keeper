@@ -8,3 +8,4 @@ export { default as Alerts } from './layouts/Alerts/Alerts';
 export { default as NavBar } from './layouts/NavBar/NavBar';
 export { default as About } from './pages/About/About';
 export { default as Home } from './pages/Home/Home';
+export { default as PrivateRoute } from './routing/PrivateRoute';
