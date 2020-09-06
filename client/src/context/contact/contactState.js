@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
-import { v4 } from 'uuid';
 import ContactContext from './contactContext';
 import ContactReducer from './contactReducer';
+import { contactAPI } from 'api';
 
 import {
   ADD_CONTACT,
@@ -11,41 +11,26 @@ import {
   UPDATE_CONTACT,
   FILTER_CONTACTS,
   CLEAR_FILTER,
+  CONTACT_ERR
 } from '../types';
 
 const ContactState = ({ children }) => {
   const initialState = {
-    contacts: [
-      {
-        id: 1,
-        name: 'Tri Nguyen',
-        email: 'nvtri@gmail.com',
-        phone: '111-111-1111',
-        type: 'personal',
-      },
-      {
-        id: 2,
-        name: 'Duc Le',
-        email: 'ltduc@gmail.com',
-        phone: '111-111-1112',
-        type: 'personal',
-      },
-      {
-        id: 3,
-        name: 'Hieu Tran',
-        email: 'nthieu@gmail.com',
-        phone: '111-111-1113',
-        type: 'professional',
-      },
-    ],
+    contacts: [],
     current: null,
     filtered: null,
+    error: null
   };
 
   const [state, dispatch] = useReducer(ContactReducer, initialState);
 
-  const addContact = (contact) => {
-    dispatch({ type: ADD_CONTACT, payload: { id: v4(), ...contact } });
+  const addContact = async (contact) => {
+    try {
+      const data = await contactAPI.addContact(contact);
+      dispatch({ type: ADD_CONTACT, payload: data });
+    } catch (error) {
+      dispatch({ type: CONTACT_ERR, payload: error.msg });
+    }
   };
 
   const deleteContact = (id) => {
@@ -78,13 +63,14 @@ const ContactState = ({ children }) => {
         contacts: state.contacts,
         current: state.current,
         filtered: state.filtered,
+        error: state.error,
         addContact,
         updateContact,
         deleteContact,
         setCurrent,
         clearCurrent,
         filterContacts,
-        clearFilter
+        clearFilter,
       }}
     >
       {children}

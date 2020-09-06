@@ -16,7 +16,7 @@ function Contacts() {
     <Fragment>
       <TransitionGroup>
         {listContacts.map((contact) => (
-          <CSSTransition key={contact.id} timeout={500} classNames='item'>
+          <CSSTransition key={contact._id} timeout={500} classNames='item'>
             <ContactItem contact={contact} />
           </CSSTransition>
         ))}
