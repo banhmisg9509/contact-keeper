@@ -4,6 +4,8 @@ import ContactReducer from './contactReducer';
 import { contactAPI } from 'api';
 
 import {
+  GET_CONTACTS,
+  CLEAR_CONTACTS,
   ADD_CONTACT,
   DELETE_CONTACT,
   SET_CURRENT,
@@ -16,13 +18,26 @@ import {
 
 const ContactState = ({ children }) => {
   const initialState = {
-    contacts: [],
+    contacts: null,
     current: null,
     filtered: null,
     error: null
   };
 
   const [state, dispatch] = useReducer(ContactReducer, initialState);
+ 
+  const getContacts = async () => {
+    try {
+      const contacts = await contactAPI.getContacts();
+      dispatch({ type: GET_CONTACTS, payload: contacts });
+    } catch (error) {
+      dispatch({ type: CONTACT_ERR, payload: error.msg });
+    }
+  }
+
+  const clearContacts = async () => {
+      dispatch({ type: CLEAR_CONTACTS });
+  }
 
   const addContact = async (contact) => {
     try {
@@ -64,6 +79,9 @@ const ContactState = ({ children }) => {
         current: state.current,
         filtered: state.filtered,
         error: state.error,
+        loading: state.loading,
+        getContacts,
+        clearContacts,
         addContact,
         updateContact,
         deleteContact,

@@ -32,3 +32,8 @@ axiosClient.interceptors.request.use(function (config) {
 export const addContact = async (contact) => {
   return await axiosClient.post('/api/contacts', contact);
 };
+
+
+export const getContacts = async () => {
+  return await axiosClient.get('/api/contacts');
+}
