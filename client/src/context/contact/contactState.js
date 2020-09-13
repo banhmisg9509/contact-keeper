@@ -65,8 +65,13 @@ const ContactState = ({ children }) => {
     dispatch({ type: CLEAR_CURRENT });
   };
 
-  const updateContact = (contact) => {
-    dispatch({ type: UPDATE_CONTACT, payload: contact });
+  const updateContact = async (contact) => {
+    try {
+      const data = await contactAPI.updateContact(contact);
+      dispatch({ type: UPDATE_CONTACT, payload: data });
+    } catch (error) {
+      dispatch({ type: CONTACT_ERR, payload: error.msg });
+    }
   };
 
   const filterContacts = (text) => {

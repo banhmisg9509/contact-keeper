@@ -51,8 +51,33 @@ const contacts = (router) => {
   // @route   PUT api/contacts/:id
   // @desc    Update contact
   // @access  Private
-  router.put('/contacts/:id', (req, res) => {
-    res.send('Update contact ' + req.params.id);
+  router.put('/contacts/:id', verifyToken, async (req, res) => {
+    const { name, email, phone, type } = req.body;
+
+    const contactFields = {};
+    if (name) contactFields.name = name;
+    if (email) contactFields.email = email;
+    if (phone) contactFields.phone = phone;
+    if (type) contactFields.type = type;
+
+    try {
+      let contact = await Contact.findById(req.params.id);
+      if (!contact) return res.status(404).json({ msg: 'Contact not found' });
+
+      if (contact.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'Not authorized' });
+      }
+
+      contact = await Contact.findByIdAndUpdate(
+        req.params.id,
+        {$set: contactFields},
+        {new: true},
+      );
+
+      res.json(contact);
+    } catch (err) {
+      handleErrorResponse(res, err);
+    }
   });
 
   // @route   DELETE api/contacts/:id
@@ -60,6 +85,13 @@ const contacts = (router) => {
   // @access  Private
   router.delete('/contacts/:id', verifyToken, async (req, res) => {
     try {
+      let contact = await Contact.findById(req.params.id);
+      if (!contact) return res.status(404).json({ msg: 'Contact not found' });
+
+      if (contact.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'Not authorized' });
+      }
+
       await Contact.findOneAndDelete({ _id: req.params.id });
       res.json({ msg: 'Successfully deleted contact' });
     } catch (err) {
