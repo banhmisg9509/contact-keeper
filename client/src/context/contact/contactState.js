@@ -48,8 +48,13 @@ const ContactState = ({ children }) => {
     }
   };
 
-  const deleteContact = (id) => {
-    dispatch({ type: DELETE_CONTACT, payload: id });
+  const deleteContact = async (id) => {
+    try {
+      await contactAPI.deleteContact(id);
+      dispatch({ type: DELETE_CONTACT, payload: id });
+    } catch (error) {
+      dispatch({ type: CONTACT_ERR, payload: error.msg });
+    }
   };
 
   const setCurrent = (contact) => {

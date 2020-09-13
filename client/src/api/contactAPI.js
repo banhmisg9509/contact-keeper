@@ -33,7 +33,10 @@ export const addContact = async (contact) => {
   return await axiosClient.post('/api/contacts', contact);
 };
 
-
 export const getContacts = async () => {
   return await axiosClient.get('/api/contacts');
-}
+};
+
+export const deleteContact = async (id) => {
+  return await axiosClient.delete(`/api/contacts/${id}`);
+};

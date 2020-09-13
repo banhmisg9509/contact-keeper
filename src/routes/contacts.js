@@ -58,8 +58,13 @@ const contacts = (router) => {
   // @route   DELETE api/contacts/:id
   // @desc    Delete contact
   // @access  Private
-  router.delete('/contacts/:id', (req, res) => {
-    res.send('Delete contact ' + req.params.id);
+  router.delete('/contacts/:id', verifyToken, async (req, res) => {
+    try {
+      await Contact.findOneAndDelete({ _id: req.params.id });
+      res.json({ msg: 'Successfully deleted contact' });
+    } catch (err) {
+      handleErrorResponse(res, err);
+    }
   });
 };
 
